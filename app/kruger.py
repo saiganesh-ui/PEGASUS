@@ -5,6 +5,8 @@ Project PEGASUS
 from datetime import datetime
 from modules.memory.memory import Memory 
 from modules.command.command_engine import CommandEngine
+from modules.brain.brain import Brain
+
 
 
 
@@ -20,6 +22,7 @@ class Kruger:
 
 
         self.command = CommandEngine(self.memory)
+        self.brain = Brain()
 
     def startup(self):
 
@@ -51,6 +54,13 @@ class Kruger:
 
                 break
 
-            self.command.execute(command)
+            response = self.brain.think(command)
 
+            if response:
+
+                 print(response)
+
+            else:
+
+                self.command.execute(command)
     

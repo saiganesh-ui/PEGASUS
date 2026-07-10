@@ -3,7 +3,8 @@ KRUGER Core
 Project PEGASUS
 """
 from datetime import datetime
-from modules.memory.memory import Memory
+from modules.memory.memory import Memory 
+from modules.command.command_engine import CommandEngine
 
 
 
@@ -16,6 +17,9 @@ class Kruger:
 
 
         self.memory = Memory()
+
+
+        self.command = CommandEngine(self.memory)
 
     def startup(self):
 
@@ -37,9 +41,16 @@ class Kruger:
         print("Awaiting command...")
 
         
+        while True:
 
-        self.memory.remember("favorite_game", "Spider-Man 2")
-        
-        self.memory.recall("favorite_game")
+            command = input("\nKRUGER > ")
 
-        print(f"\nStartup Time : {datetime.now()}")
+            if command.lower() == "exit":
+
+                print("Goodbye, Ganesh.")
+
+                break
+
+            self.command.execute(command)
+
+    

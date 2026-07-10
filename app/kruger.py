@@ -6,6 +6,7 @@ from datetime import datetime
 from modules.memory.memory import Memory 
 from modules.command.command_engine import CommandEngine
 from modules.brain.brain import Brain
+from modules.logger.logger import Logger
 
 
 
@@ -23,9 +24,10 @@ class Kruger:
 
         self.command = CommandEngine(self.memory)
         self.brain = Brain()
+        self.logger = Logger()
 
     def startup(self):
-
+        self.logger.info("KRUGER Starting")
         print("=" * 50)
         print(f"        KRUGER v{self.version}")
         print(f"         {self.codename}")
@@ -35,7 +37,9 @@ class Kruger:
 
         print("✓ Configuration Loaded")
         print("✓ Memory  Initialized")
+        self.logger.info("Memory Engine Loaded")
         print("✓ Modules Loaded")
+        self.logger.info("Modules Loaded")
 
         print("\nHello, Ganesh.")
 

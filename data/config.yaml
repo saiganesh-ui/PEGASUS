@@ -1,0 +1,10 @@
+assistant:
+  name: KRUGER
+  version: "0.1"
+  codename: AWAKENING
+
+user:
+  name: Ganesh
+
+system:
+  greeting: "Hello, Ganesh."

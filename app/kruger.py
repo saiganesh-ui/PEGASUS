@@ -7,6 +7,7 @@ from modules.memory.memory import Memory
 from modules.command.command_engine import CommandEngine
 from modules.brain.brain import Brain
 from modules.logger.logger import Logger
+from modules.memory.session import Session
 
 
 
@@ -20,6 +21,7 @@ class Kruger:
 
 
         self.memory = Memory()
+        self.session = Session()
 
 
         self.command = CommandEngine(self.memory)
@@ -46,6 +48,12 @@ class Kruger:
         print("KRUGER is online.")
 
         print("Awaiting command...")
+
+        self.session.set("status", "Running")
+        self.session.set("user", "Ganesh")
+
+        print(self.session.get("status"))
+        print(self.session.get("user"))
 
         
         while True:

@@ -1,5 +1,6 @@
 from .conversation import Conversation
 
+
 class Brain:
 
     def __init__(self):
@@ -8,15 +9,35 @@ class Brain:
 
     def think(self, command):
 
-        command = command.lower()
+        text = command.strip()
+        lower = text.lower()
 
-        if "hello" in command:
-            return "Hello, Ganesh."
+        # Greetings
+        if lower in ["hello", "hi", "hey"]:
+            return {
+                "type": "response",
+                "message": "Hello, Ganesh."
+            }
 
-        if "hi" in command:
-            return "Hi, Ganesh."
+        if lower == "how are you":
+            return {
+                "type": "response",
+                "message": "I'm operating normally."
+            }
 
-        if "how are you" in command:
-            return "I'm operating normally."
+        # Natural Language Memory
+        if lower.startswith("my name is "):
 
-        return None
+            name = text[11:].strip()
+
+            return {
+                "type": "memory_store",
+                "key": "name",
+                "value": name
+            }
+
+        # Default
+        return {
+            "type": "command",
+            "message": text
+        }   

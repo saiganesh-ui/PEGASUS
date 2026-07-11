@@ -1,0 +1,3 @@
+class Personality:
+
+    pass

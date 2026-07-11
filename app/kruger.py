@@ -66,13 +66,24 @@ class Kruger:
 
                 break
 
-            response = self.brain.think(command)
+            decision = self.brain.think(command)
 
-            if response:
+            if decision["type"] == "response":
 
-                 print(response)
+                print(decision["message"])
 
-            else:
+            elif decision["type"] == "command":
 
-                self.command.execute(command)
+                self.command.execute(decision["message"])
+
+            elif decision["type"] == "memory_store":
+
+                self.memory.remember(
+                     decision["key"],
+                     decision["value"]
+                )
+
+                print(
+                      f"I'll remember that your {decision['key']} is {decision['value']}."
+                     )
     

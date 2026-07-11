@@ -1,9 +1,10 @@
-"""
-KRUGER Brain
-Project PEGASUS
-"""
+from .conversation import Conversation
 
 class Brain:
+
+    def __init__(self):
+
+        self.conversation = Conversation()
 
     def think(self, command):
 

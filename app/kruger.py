@@ -10,6 +10,7 @@ from modules.logger.logger import Logger
 from modules.memory.session import Session
 from modules.services.time_service import TimeService
 from modules.services.system_service import SystemService
+from modules.actions.open_action import OpenAction
 
 
 
@@ -26,6 +27,7 @@ class Kruger:
         self.session = Session()
         self.time = TimeService() 
         self.system = SystemService()  
+        self.opener = OpenAction()
 
 
         self.command = CommandEngine(self.memory)
@@ -150,5 +152,18 @@ class Kruger:
                 print(f"Free : {disk.free//1024**3} GB")
 
                 print(f"Total : {disk.total//1024**3} GB")  
-                
-                        
+
+            elif decision["type"] == "open":
+
+                success = self.opener.execute(
+                    decision["app"]
+                )
+
+                if success:
+
+                    print(f"Opening {decision['app']}...")
+
+                else:
+
+                    print("Application not supported.")
+

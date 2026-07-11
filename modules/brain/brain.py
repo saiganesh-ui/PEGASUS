@@ -116,6 +116,18 @@ class Brain:
         if lower == "disk":
 
             return {"type":"disk"}
+        
+        if lower.startswith("open "):
+
+            app = text[5:].strip()
+
+            return {
+
+                "type": "open",
+
+                "app": app
+
+             }
 
         # Default
         return {

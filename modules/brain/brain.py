@@ -1,4 +1,5 @@
 from .conversation import Conversation
+from .patterns import PATTERNS
 
 
 class Brain:
@@ -26,14 +27,74 @@ class Brain:
             }
 
         # Natural Language Memory
-        if lower.startswith("my name is "):
+        for pattern in PATTERNS:
 
-            name = text[11:].strip()
+          if lower.startswith(pattern["prefix"]):
+
+            value = text[len(pattern["prefix"]):].strip()
 
             return {
-                "type": "memory_store",
-                "key": "name",
-                "value": name
+                    "type": "memory_store",
+                     "key": pattern["key"],
+                     "value": value
+                  }
+          
+          if lower == "what is my name":
+            return {
+                "type": "memory_recall",
+                "key": "name"
+            }
+
+        if lower == "what is my city":
+            return {
+                "type": "memory_recall",
+                "key": "city"
+            }
+
+        if lower == "what is my favorite game":
+            return {
+                "type": "memory_recall",
+                "key": "favorite_game"
+            }
+
+        if lower == "what is my college":
+            return {
+                "type": "memory_recall",
+                "key": "college"
+            }
+        
+        # Time
+        if lower in [
+          "what time is it",
+          "time",
+          "current time"
+            ]:
+
+            return {
+                 "type": "time"
+                }
+
+
+        # Date
+        if lower in [
+             "what is today's date",
+             "today's date",
+            "date"
+            ]:
+
+            return {
+                "type": "date"
+                }
+
+
+        # Day
+        if lower in [
+             "what day is today",
+             "day"
+        ]:
+
+            return {
+                "type": "day"
             }
 
         # Default

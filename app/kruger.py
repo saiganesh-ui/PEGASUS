@@ -8,6 +8,7 @@ from modules.command.command_engine import CommandEngine
 from modules.brain.brain import Brain
 from modules.logger.logger import Logger
 from modules.memory.session import Session
+from modules.services.time_service import TimeService
 
 
 
@@ -22,6 +23,7 @@ class Kruger:
 
         self.memory = Memory()
         self.session = Session()
+        self.time = TimeService()   
 
 
         self.command = CommandEngine(self.memory)
@@ -83,7 +85,33 @@ class Kruger:
                      decision["value"]
                 )
 
+
+                
                 print(
                       f"I'll remember that your {decision['key']} is {decision['value']}."
                      )
-    
+            
+            elif decision["type"] == "memory_recall":
+
+                    self.memory.recall(
+                        decision["key"]    
+                    )
+            elif decision["type"] == "time":
+
+                print(
+                     f"Current time: {self.time.current_time()}"
+                    )
+
+
+            elif decision["type"] == "date":
+
+                print(
+                     f"Today's date: {self.time.current_date()}"
+                 )
+
+
+            elif decision["type"] == "day":
+
+                print(
+                      f"Today is {self.time.current_day()}."
+                    )        

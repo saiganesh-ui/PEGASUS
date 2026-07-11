@@ -96,6 +96,26 @@ class Brain:
             return {
                 "type": "day"
             }
+        
+        if lower == "system":
+
+            return {"type":"system"}
+
+        if lower == "cpu":
+
+            return {"type":"cpu"}
+
+        if lower == "memory":
+
+            return {"type":"memory"}
+
+        if lower == "ram":
+
+            return {"type":"memory"}
+
+        if lower == "disk":
+
+            return {"type":"disk"}
 
         # Default
         return {

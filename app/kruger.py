@@ -9,6 +9,7 @@ from modules.brain.brain import Brain
 from modules.logger.logger import Logger
 from modules.memory.session import Session
 from modules.services.time_service import TimeService
+from modules.services.system_service import SystemService
 
 
 
@@ -23,7 +24,8 @@ class Kruger:
 
         self.memory = Memory()
         self.session = Session()
-        self.time = TimeService()   
+        self.time = TimeService() 
+        self.system = SystemService()  
 
 
         self.command = CommandEngine(self.memory)
@@ -114,4 +116,39 @@ class Kruger:
 
                 print(
                       f"Today is {self.time.current_day()}."
-                    )        
+                    )    
+            elif decision["type"] == "system":
+
+                print(f"OS : {self.system.os_name()} {self.system.os_version()}")
+
+                print(f"Processor : {self.system.processor()}")
+
+                print(f"Machine : {self.system.machine()}")
+
+                print(f"Python : {self.system.python_version()}")    
+
+            elif decision["type"] == "cpu":
+
+                print(f"CPU Usage : {self.system.cpu_usage()}%")      
+
+            elif decision["type"] == "memory":
+
+                ram = self.system.ram()
+
+                print(f"RAM Usage : {ram.percent}%")
+
+                print(f"Used : {ram.used//1024**3} GB")
+
+                print(f"Total : {ram.total//1024**3} GB")
+
+            elif decision["type"] == "disk":
+
+                disk = self.system.disk()
+
+                print(f"Used : {disk.used//1024**3} GB")
+
+                print(f"Free : {disk.free//1024**3} GB")
+
+                print(f"Total : {disk.total//1024**3} GB")  
+                
+                        

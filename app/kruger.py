@@ -11,6 +11,7 @@ from modules.memory.session import Session
 from modules.services.time_service import TimeService
 from modules.services.system_service import SystemService
 from modules.actions.open_action import OpenAction
+from modules.actions.search_action import SearchAction
 
 
 
@@ -28,6 +29,7 @@ class Kruger:
         self.time = TimeService() 
         self.system = SystemService()  
         self.opener = OpenAction()
+        self.search = SearchAction()
 
 
         self.command = CommandEngine(self.memory)
@@ -167,3 +169,12 @@ class Kruger:
 
                     print("Application not supported.")
 
+            elif decision["type"] == "search":
+
+                self.search.execute(
+                    decision["query"]
+                )
+
+                print(
+                    f"Searching Google for '{decision['query']}'..."
+                )

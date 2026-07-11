@@ -128,6 +128,18 @@ class Brain:
                 "app": app
 
              }
+        
+        if lower.startswith(("search ", "google ")):
+
+            if lower.startswith("search "):
+                query = text[7:].strip()
+            else :
+                query = text[7:].strip()
+
+            return {
+                    "type": "search",
+                    "query": query
+            }
 
         # Default
         return {

@@ -1,5 +1,14 @@
+import random
+
 from .conversation import Conversation
 from .patterns import PATTERNS
+from modules.nlp.normalizer import Normalizer
+from modules.nlp.intents import INTENTS
+from modules.nlp.responses import RESPONSES
+from modules.router.intent_router import IntentRouter
+from modules.router.handlers.greeting_handler import GreetingHandler
+from modules.router.handlers.status_handler import StatusHandler
+from modules.router.handlers.memory_handler import MemoryHandler
 
 
 class Brain:
@@ -7,39 +16,71 @@ class Brain:
     def __init__(self):
 
         self.conversation = Conversation()
+        self.normalizer = Normalizer()
+
+        self.router = IntentRouter()
+
+        self.router.register(
+            "greeting",
+            GreetingHandler()
+        )
+
+        self.router.register(
+            "status",
+            StatusHandler()
+            )
+        
+        self.router.register(
+
+            "memory",
+
+            MemoryHandler(self.memory)
+
+            )
 
     def think(self, command):
 
         text = command.strip()
-        lower = text.lower()
+        lower = self.normalizer.clean(text)
 
         # Greetings
-        if lower in ["hello", "hi", "hey"]:
-            return {
-                "type": "response",
-                "message": "Hello, Ganesh."
-            }
+        if lower in INTENTS["greeting"]:
 
-        if lower == "how are you":
-            return {
-                "type": "response",
-                "message": "I'm operating normally."
-            }
+            return self.router.execute(
+                "greeting"
+            )
+        
+        if lower in INTENTS["how_are_you"]:
+
+            return self.router.execute(
+                "status"
+            )
 
         # Natural Language Memory
+       # Natural Language Memory
         for pattern in PATTERNS:
 
-          if lower.startswith(pattern["prefix"]):
+            if lower.startswith(pattern["prefix"]):
 
-            value = text[len(pattern["prefix"]):].strip()
+                value = text[len(pattern["prefix"]):].strip()
 
-            return {
-                    "type": "memory_store",
-                     "key": pattern["key"],
-                     "value": value
-                  }
+                decision = {
+
+                    "key": pattern["key"],
+
+                    "value": value
+
+                }
+
+                return self.router.execute(
+
+                    "memory",
+
+                    decision
+
+                )
           
-          if lower == "what is my name":
+        if lower == "what is my name":
             return {
                 "type": "memory_recall",
                 "key": "name"
@@ -117,17 +158,22 @@ class Brain:
 
             return {"type":"disk"}
         
-        if lower.startswith("open "):
+        for verb in INTENTS["open_app"]:
 
-            app = text[5:].strip()
+            if lower.startswith(verb + " "):
 
-            return {
+                app = text[len(verb):].strip()
 
-                "type": "open",
+                if app.startswith("google "):
+                    app = app[7:]
 
-                "app": app
+                return {
 
-             }
+                    "type":"open",
+
+                    "app":app
+
+                }
         
         if lower.startswith(("search ", "google ")):
 
@@ -139,6 +185,54 @@ class Brain:
             return {
                     "type": "search",
                     "query": query
+            }
+        
+        if lower.startswith("create folder "):
+
+            folder_name = text[14:].strip()
+
+            return {
+                "type": "create_folder",
+                "name": folder_name
+            }
+        
+        if lower.startswith("create file "):
+
+            file_name = text[12:].strip()
+
+            return {
+                "type": "create_file",
+                "name": file_name
+            }
+        
+        if lower.startswith("delete file "):
+
+            file_name = text[12:].strip()
+
+            return {
+                "type": "delete_file",
+                "name": file_name
+            }
+
+        if lower.startswith("delete folder "):
+
+            folder_name = text[14:].strip()
+
+            return {
+                "type": "delete_folder",
+                "name": folder_name
+            }
+        
+        if lower == "list files":
+
+            return {
+                "type": "list_files"
+            }
+        
+        if lower in ["current directory", "pwd", "workspace"]:
+
+            return {
+                "type": "current_directory"
             }
 
         # Default

@@ -23,6 +23,8 @@ class Memory:
 
             print(f"{key} = {result[0]}")
 
-        else:
+            return result[0]
 
-            print("Memory not found.")
+        print("Memory not found.")
+
+        return None

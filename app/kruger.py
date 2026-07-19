@@ -12,6 +12,7 @@ from modules.services.time_service import TimeService
 from modules.services.system_service import SystemService
 from modules.actions.open_action import OpenAction
 from modules.actions.search_action import SearchAction
+from modules.actions.file_action import FileAction
 
 
 
@@ -30,6 +31,7 @@ class Kruger:
         self.system = SystemService()  
         self.opener = OpenAction()
         self.search = SearchAction()
+        self.files = FileAction()
 
 
         self.command = CommandEngine(self.memory)
@@ -84,18 +86,7 @@ class Kruger:
 
                 self.command.execute(decision["message"])
 
-            elif decision["type"] == "memory_store":
-
-                self.memory.remember(
-                     decision["key"],
-                     decision["value"]
-                )
-
-
-                
-                print(
-                      f"I'll remember that your {decision['key']} is {decision['value']}."
-                     )
+            
             
             elif decision["type"] == "memory_recall":
 
@@ -178,3 +169,50 @@ class Kruger:
                 print(
                     f"Searching Google for '{decision['query']}'..."
                 )
+
+            elif decision["type"] == "create_folder":
+
+                result = self.files.create_folder(
+                    decision["name"]
+                )
+
+                print(result)
+
+            elif decision["type"] == "create_file":
+
+                result = self.files.create_file(
+                    decision["name"]
+                )
+
+                print(result)
+
+            elif decision["type"] == "delete_file":
+
+                result = self.files.delete_file(
+                    decision["name"]
+                )
+
+                print(result)   
+
+            elif decision["type"] == "delete_folder":
+
+                result = self.files.delete_folder(
+                    decision["name"]
+                )
+
+                print(result)
+
+            elif decision["type"] == "list_files":
+
+                files = self.files.list_files()
+
+                if not files:
+                    print("Workspace is empty.")
+                else:
+                    print("\nWorkspace Files:")
+                    for file in files:
+                        print(f" - {file}")
+
+            elif decision["type"] == "current_directory":
+
+                 print(self.files.current_directory())

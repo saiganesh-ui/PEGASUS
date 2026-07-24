@@ -1,8 +1,8 @@
 from modules.router.base_handler import BaseHandler
 
 
-class BaseHandler:
+class DefaultHandler(BaseHandler):
 
     def execute(self, decision):
 
-        raise NotImplementedError
+        return decision

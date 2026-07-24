@@ -21,10 +21,26 @@ class FileSkill(BaseSkill):
 
     def can_handle(self, command):
 
-        return any(
-            command.startswith(prefix)
-            for prefix in INTENTS["file"]
-        )
+        command = command.lower()
+
+        file_intents = [
+
+            "create_folder",
+            "create_file",
+            "delete_folder",
+            "delete_file",
+            "rename_folder"
+
+        ]
+
+        for intent in file_intents:
+
+            for prefix in INTENTS[intent]:
+
+                if command.startswith(prefix):
+                    return True
+
+        return False
 
     def execute(self, command=None):
 

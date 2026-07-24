@@ -169,16 +169,34 @@ INTENTS = {
 
     ],   
 
-    "file": [
+    "create_folder": [
 
     "create folder ",
 
-    "create file ",
+    ],
 
-    "delete folder ",
+    "create_file": [
 
-    "delete file "
+        "create file ",
 
-],
+    ],
+
+    "delete_folder": [
+
+        "delete folder ",
+
+    ],
+
+    "delete_file": [
+
+        "delete file ",
+
+    ],
+
+    "rename_folder": [
+
+        "rename folder ",
+
+    ],
 
 }

@@ -16,8 +16,10 @@ class Pipeline:
 
     def run(self, command):
 
-        plan = self.planner.create_plan(command)
+        plan = self.planner.plan(command)
 
-        result = self.skills.execute(plan)
+        print(plan)
+
+        result = self.skills.execute(plan["command"])
 
         return result

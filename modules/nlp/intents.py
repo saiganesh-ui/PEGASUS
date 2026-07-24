@@ -3,7 +3,7 @@ Intent Patterns
 Project PEGASUS
 """
 
-INTENTS = {
+PATTERNS = {
 
     "greeting": [
 
@@ -89,7 +89,7 @@ INTENTS = {
 
     ],
     
-    "open_app": [
+    "open": [
 
         "open",
 
@@ -198,5 +198,25 @@ INTENTS = {
         "rename folder ",
 
     ],
+
+    "system": [
+    "cpu",
+    "memory",
+    "ram",
+    "disk",
+    "storage",
+    "system info"
+    ],
+
+    "status": [
+        "status",
+        "context"
+    ],
+
+    "history": [
+        "last app",
+        "last application",
+        "last_app"
+    ]
 
 }

@@ -3,7 +3,8 @@ Planner
 Project PEGASUS
 """
 
-from modules.nlp.intents import INTENTS
+print(">>> LOADED NEW PLANNER <<<")
+
 from modules.nlp.intent_classifier import IntentClassifier
 from modules.nlp.entity_extractor import EntityExtractor
 from modules.nlp.normalizer import Normalizer
@@ -20,6 +21,10 @@ class Planner:
 
     def plan(self, command):
 
+        command = self.normalizer.normalize(command)
+
+        print("Normalized:", command)   
+
         intent = self.classifier.classify(command)
 
         entity = self.extractor.extract(
@@ -28,7 +33,7 @@ class Planner:
         )
 
         return {
-
+             
             "intent": intent,
 
             "entity": entity,

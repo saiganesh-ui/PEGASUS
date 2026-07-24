@@ -3,13 +3,10 @@ Memory Skill
 Project PEGASUS
 """
 
-from multiprocessing import context
+
 
 from skills.base_skill import BaseSkill
 from modules.memory.memory import Memory
-from modules.nlp.intents import INTENTS
-from modules.parser.command_parser import CommandParser
-
 
 class MemorySkill(BaseSkill):
 
@@ -18,73 +15,57 @@ class MemorySkill(BaseSkill):
         super().__init__(context)
 
         self.memory = Memory()
-        self.parser = CommandParser()
 
-    def can_handle(self, command):
+    def can_handle(self, decision):
 
-        remember = any(
-            command.startswith(prefix)
-            for prefix in INTENTS["remember"]
+        return decision["intent"] in (
+            "remember",
+            "recall"
         )
+    def execute(self, decision):
 
-        recall = any(
-            command.startswith(prefix)
-            for prefix in INTENTS["recall"]
-        )
-
-        return remember or recall
-
-    def execute(self, command=None):
+        intent = decision["intent"]
+        entity = decision["entity"]
 
         # Remember
-        if any(command.startswith(prefix) for prefix in INTENTS["remember"]):
+        if intent == "remember":
 
-            key_value = self.parser.parse(
-                command,
-                INTENTS["remember"]
-            )
-
-            if "=" not in key_value:
+            if "=" not in entity:
 
                 return {
                     "type": "response",
                     "message": "Use: remember key=value"
                 }
 
-            key, value = key_value.split("=", 1)
+            key, value = entity.split("=", 1)
 
-            self.memory.remember(
-                key.strip(),
-                value.strip()
-            )
+            key = key.strip()
+            value = value.strip()
+
+            self.memory.remember(key, value)
+
+            self.context.set("last_command", decision["command"])
 
             return {
                 "type": "response",
-                "message": f"I'll remember your {key.strip()}."
+                "message": f"I'll remember your {key}."
             }
 
         # Recall
-        key = self.parser.parse(
-            command,
-            INTENTS["recall"]
-        )
+        key = entity.strip()
 
         value = self.memory.recall(key)
+
+        self.context.set("last_command", decision["command"])
 
         if value:
 
             return {
-
                 "type": "response",
-
                 "message": f"Your {key} is {value}."
-
             }
 
         return {
-
             "type": "response",
-
             "message": f"I don't know your {key}."
-
         }

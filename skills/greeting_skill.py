@@ -5,7 +5,7 @@ Project PEGASUS
 
 import random
 
-from modules.nlp.intents import INTENTS
+from modules.nlp.intents import PATTERNS
 from modules.nlp.responses import RESPONSES
 
 from skills.base_skill import BaseSkill
@@ -17,11 +17,11 @@ class GreetingSkill(BaseSkill):
 
         super().__init__(context)
 
-    def can_handle(self, text):
+    def can_handle(self, decision):
 
-        return text in INTENTS["greeting"]
+        return decision["intent"] == "greeting"
 
-    def execute(self, command=None):
+    def execute(self, decision):
 
         return {
             "type": "response",

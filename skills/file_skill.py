@@ -3,11 +3,8 @@ File Skill
 Project PEGASUS
 """
 
-from modules import command
 from skills.base_skill import BaseSkill
 from modules.actions.file_action import FileAction
-from modules.nlp.intents import INTENTS
-from modules.parser.command_parser import CommandParser
 
 
 class FileSkill(BaseSkill):
@@ -17,104 +14,80 @@ class FileSkill(BaseSkill):
         super().__init__(context)
 
         self.file = FileAction()
-        self.parser = CommandParser()
 
-    def can_handle(self, command):
+    def can_handle(self, decision):
 
-        command = command.lower()
-
-        file_intents = [
-
+        return decision["intent"] in (
             "create_folder",
             "create_file",
             "delete_folder",
             "delete_file",
             "rename_folder"
+        )
 
-        ]
+    def execute(self, decision):
 
-        for intent in file_intents:
-
-            for prefix in INTENTS[intent]:
-
-                if command.startswith(prefix):
-                    return True
-
-        return False
-
-    def execute(self, command=None):
+        intent = decision["intent"]
+        entity = decision["entity"]
 
         # Create Folder
-        if command.startswith("create folder "):
+        if intent == "create_folder":
 
-            folder = self.parser.parse(
-                command,
-                ["create folder "]
-            )
+            self.file.create_folder(entity)
 
-            self.file.create_folder(folder)
-
-            self.context.set("last_folder", folder)
-            self.context.set("last_command", command)
+            self.context.set("last_folder", entity)
+            self.context.set("last_command", decision["command"])
 
             return {
                 "type": "response",
-                "message": f"Folder '{folder}' created."
+                "message": f"Folder '{entity}' created."
             }
 
         # Create File
-        elif command.startswith("create file "):
+        elif intent == "create_file":
 
-            filename = self.parser.parse(
-                command,
-                ["create file "]
-            )
+            self.file.create_file(entity)
 
-            self.file.create_file(filename)
-
-            self.context.set("last_file", filename)
-            self.context.set("last_command", command)
-
-          
+            self.context.set("last_file", entity)
+            self.context.set("last_command", decision["command"])
 
             return {
                 "type": "response",
-                "message": f"File '{filename}' created."
+                "message": f"File '{entity}' created."
             }
 
         # Delete Folder
-        elif command.startswith("delete folder "):
+        elif intent == "delete_folder":
 
-            folder = self.parser.parse(
-                command,
-                ["delete folder "]
-            )
+            self.file.delete_folder(entity)
 
-            self.file.delete_folder(folder)
-
-            self.context.set("last_folder", folder)
-            self.context.set("last_command", command)
+            self.context.set("last_folder", entity)
+            self.context.set("last_command", decision["command"])
 
             return {
                 "type": "response",
-                "message": f"Folder '{folder}' deleted."
+                "message": f"Folder '{entity}' deleted."
             }
 
         # Delete File
-        elif command.startswith("delete file "):
+        elif intent == "delete_file":
 
-            filename = self.parser.parse(
-                command,
-                ["delete file "]
-            )
+            self.file.delete_file(entity)
 
-            self.file.delete_file(filename)
-            self.context.set("last_file", filename)
-            self.context.set("last_command", command)
+            self.context.set("last_file", entity)
+            self.context.set("last_command", decision["command"])
 
             return {
                 "type": "response",
-                "message": f"File '{filename}' deleted."
+                "message": f"File '{entity}' deleted."
+            }
+
+        # Rename Folder (placeholder)
+        elif intent == "rename_folder":
+
+            return {
+                "type": "response",
+                "message": "Rename folder is not implemented yet."
             }
 
         return {

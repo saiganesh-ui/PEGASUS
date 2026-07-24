@@ -3,7 +3,7 @@ Entity Extractor
 Project PEGASUS
 """
 
-from modules.nlp.intents import INTENTS
+from modules.nlp.intents import PATTERNS
 
 
 class EntityExtractor:
@@ -19,7 +19,7 @@ class EntityExtractor:
             return None
 
         # Find prefixes for this intent
-        prefixes = INTENTS.get(intent, [])
+        prefixes = PATTERNS.get(intent, [])
 
         for prefix in prefixes:
 

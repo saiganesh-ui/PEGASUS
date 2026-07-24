@@ -20,6 +20,7 @@ class Pipeline:
 
         print(plan)
 
-        result = self.skills.execute(plan["command"])
-
+        result = self.skills.execute(
+            plan
+        )
         return result

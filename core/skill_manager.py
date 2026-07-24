@@ -15,13 +15,13 @@ class SkillManager:
 
         self.skills = loader.load()
 
-    def execute(self, command):
+    def execute(self, decision):
 
         for skill in self.skills:
 
             
 
-            if skill.can_handle(command):
+            if skill.can_handle(decision):
 
-                return skill.execute(command)
+                return skill.execute(decision)
         return None

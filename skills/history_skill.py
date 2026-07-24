@@ -12,19 +12,11 @@ class HistorySkill(BaseSkill):
 
         super().__init__(context)
 
-    def can_handle(self, command):
+    def can_handle(self, decision):
 
-        command = command.lower()
+        return decision["intent"] == "history"
 
-        return command in [
-
-            "last app",
-
-            "last application"
-
-        ]
-
-    def execute(self, command=None):
+    def execute(self, decision):
 
         app = self.context.get("last_app")
 

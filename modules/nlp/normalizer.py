@@ -3,11 +3,12 @@ Text Normalizer
 Project PEGASUS
 """
 
+import string
+
 
 class Normalizer:
 
     FILLER_WORDS = {
-
         "please",
         "can",
         "could",
@@ -16,13 +17,21 @@ class Normalizer:
         "you",
         "me",
         "for",
-        "kindly"
-
+        "kindly",
+        "to",
+        "the",
+        "a",
+        "an"
     }
 
     def normalize(self, text):
 
-        text = text.lower().strip()
+        text = text.lower()
+
+        # Remove punctuation
+        text = text.translate(
+            str.maketrans("", "", string.punctuation)
+        )
 
         words = []
 

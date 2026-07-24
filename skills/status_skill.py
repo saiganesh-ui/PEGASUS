@@ -12,23 +12,19 @@ class StatusSkill(BaseSkill):
 
         super().__init__(context)
 
-    def can_handle(self, command):
+    def can_handle(self, decision):
 
-        command = command.lower()
+        return decision["intent"] == "status"
 
-        return command in [
-
-            "status",
-
-            "context",
-
-            "history"
-
-        ]
-
-    def execute(self, command=None):
+    def execute(self, decision):
 
         data = self.context.all()
+
+        if not data:
+            return {
+                "type": "response",
+                "message": "Context is empty."
+            }
 
         lines = []
 

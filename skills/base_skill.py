@@ -10,10 +10,10 @@ class BaseSkill:
 
         self.context = context
 
-    def can_handle(self, command):
+    def can_handle(decision):
 
         raise NotImplementedError
 
-    def execute(self, command):
+    def execute(decision):
 
         raise NotImplementedError

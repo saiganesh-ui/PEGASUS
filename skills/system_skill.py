@@ -25,28 +25,23 @@ class SystemSkill(BaseSkill):
         self.registry.register("storage", self.system.disk)
         self.registry.register("system info", self.system.system_info)
 
-    def can_handle(self, command):
+    def can_handle(self, decision):
 
-        return command.lower() in self.registry.commands
+        return decision["intent"] == "system"
 
-    def execute(self, command=None):
+    def execute(self, decision):
+
+        command = decision["entity"] or decision["command"]
 
         result = self.registry.execute(command.lower())
 
         if result:
-
-            return {
-
+            return {    
                 "type": "response",
-
                 "message": result
-
             }
 
         return {
-
             "type": "response",
-
             "message": "Unknown system command."
-
         }

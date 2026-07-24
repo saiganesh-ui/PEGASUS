@@ -5,8 +5,6 @@ Project PEGASUS
 
 from skills.base_skill import BaseSkill
 from modules.actions.search_action import SearchAction
-from modules.nlp.intents import INTENTS
-from modules.parser.command_parser import CommandParser
 
 
 class SearchSkill(BaseSkill):
@@ -16,27 +14,19 @@ class SearchSkill(BaseSkill):
         super().__init__(context)
 
         self.search = SearchAction()
-        self.parser = CommandParser()
 
-    def can_handle(self, command):
+    def can_handle(self, decision):
 
-        prefixes = INTENTS["search"]
+        return decision["intent"] == "search"
 
-        return any(
-            command.startswith(prefix)
-            for prefix in prefixes
-        )
+    def execute(self, decision):
 
-    def execute(self, command=None):
-
-        prefixes = INTENTS["search"]
-
-        query = self.parser.parse(command, prefixes)
+        query = decision["entity"]
 
         self.search.execute(query)
 
         self.context.set("last_search", query)
-        self.context.set("last_command", command)
+        self.context.set("last_command", decision["command"])
 
         return {
 

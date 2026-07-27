@@ -28,61 +28,56 @@ class FileSkill(BaseSkill):
     def execute(self, decision):
 
         intent = decision["intent"]
-        entity = decision["entity"]
+        name = decision["entity"]["name"]
 
-        # Create Folder
         if intent == "create_folder":
 
-            self.file.create_folder(entity)
+            self.file.create_folder(name)
 
-            self.context.set("last_folder", entity)
+            self.context.set("last_folder", name)
             self.context.set("last_command", decision["command"])
 
             return {
                 "type": "response",
-                "message": f"Folder '{entity}' created."
+                "message": f"Folder '{name}' created."
             }
 
-        # Create File
         elif intent == "create_file":
 
-            self.file.create_file(entity)
+            self.file.create_file(name)
 
-            self.context.set("last_file", entity)
+            self.context.set("last_file", name)
             self.context.set("last_command", decision["command"])
 
             return {
                 "type": "response",
-                "message": f"File '{entity}' created."
+                "message": f"File '{name}' created."
             }
 
-        # Delete Folder
         elif intent == "delete_folder":
 
-            self.file.delete_folder(entity)
+            self.file.delete_folder(name)
 
-            self.context.set("last_folder", entity)
+            self.context.set("last_folder", name)
             self.context.set("last_command", decision["command"])
 
             return {
                 "type": "response",
-                "message": f"Folder '{entity}' deleted."
+                "message": f"Folder '{name}' deleted."
             }
 
-        # Delete File
         elif intent == "delete_file":
 
-            self.file.delete_file(entity)
+            self.file.delete_file(name)
 
-            self.context.set("last_file", entity)
+            self.context.set("last_file", name)
             self.context.set("last_command", decision["command"])
 
             return {
                 "type": "response",
-                "message": f"File '{entity}' deleted."
+                "message": f"File '{name}' deleted."
             }
 
-        # Rename Folder (placeholder)
         elif intent == "rename_folder":
 
             return {

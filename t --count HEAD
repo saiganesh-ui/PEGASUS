@@ -1,0 +1,201 @@
+[33mcommit b721184822412322ee59e7bd9afb2654535bdc30[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;33mtag: [m[1;33mv0.5.0[m[33m)[m
+Author: Sai Ganesh <saig7992@gmail.com>
+Date:   Sat Jul 25 01:00:28 2026 +0530
+
+    v0.5.0 - Decision-driven architecture complete
+
+[1mdiff --git a/core/__pycache__/pipeline.cpython-314.pyc b/core/__pycache__/pipeline.cpython-314.pyc[m
+[1mindex 630028a..f663c5b 100644[m
+Binary files a/core/__pycache__/pipeline.cpython-314.pyc and b/core/__pycache__/pipeline.cpython-314.pyc differ
+[1mdiff --git a/core/__pycache__/planner.cpython-314.pyc b/core/__pycache__/planner.cpython-314.pyc[m
+[1mindex 4c32500..3747024 100644[m
+Binary files a/core/__pycache__/planner.cpython-314.pyc and b/core/__pycache__/planner.cpython-314.pyc differ
+[1mdiff --git a/core/__pycache__/skill_manager.cpython-314.pyc b/core/__pycache__/skill_manager.cpython-314.pyc[m
+[1mindex 8dd98d6..cdc5644 100644[m
+Binary files a/core/__pycache__/skill_manager.cpython-314.pyc and b/core/__pycache__/skill_manager.cpython-314.pyc differ
+[1mdiff --git a/core/pipeline.py b/core/pipeline.py[m
+[1mindex fdc41cd..2415d83 100644[m
+[1m--- a/core/pipeline.py[m
+[1m+++ b/core/pipeline.py[m
+[36m@@ -20,6 +20,7 @@[m [mclass Pipeline:[m
+ [m
+         print(plan)[m
+ [m
+[31m-        result = self.skills.execute(plan["command"])[m
+[31m-[m
+[32m+[m[32m        result = self.skills.execute([m
+[32m+[m[32m            plan[m
+[32m+[m[32m        )[m
+         return result[m
+\ No newline at end of file[m
+[1mdiff --git a/core/planner.py b/core/planner.py[m
+[1mindex a243b7f..4fd25e8 100644[m
+[1m--- a/core/planner.py[m
+[1m+++ b/core/planner.py[m
+[36m@@ -3,7 +3,8 @@[m [mPlanner[m
+ Project PEGASUS[m
+ """[m
+ [m
+[31m-from modules.nlp.intents import INTENTS[m
+[32m+[m[32mprint(">>> LOADED NEW PLANNER <<<")[m
+[32m+[m
+ from modules.nlp.intent_classifier import IntentClassifier[m
+ from modules.nlp.entity_extractor import EntityExtractor[m
+ from modules.nlp.normalizer import Normalizer[m
+[36m@@ -20,6 +21,10 @@[m [mclass Planner:[m
+ [m
+     def plan(self, command):[m
+ [m
+[32m+[m[32m        command = self.normalizer.normalize(command)[m
+[32m+[m
+[32m+[m[32m        print("Normalized:", command)[m[41m   [m
+[32m+[m
+         intent = self.classifier.classify(command)[m
+ [m
+         entity = self.extractor.extract([m
+[36m@@ -28,7 +33,7 @@[m [mclass Planner:[m
+         )[m
+ [m
+         return {[m
+[31m-[m
+[32m+[m[41m             [m
+             "intent": intent,[m
+ [m
+             "entity": entity,[m
+[1mdiff --git a/core/skill_manager.py b/core/skill_manager.py[m
+[1mindex 4c3efca..784a31e 100644[m
+[1m--- a/core/skill_manager.py[m
+[1m+++ b/core/skill_manager.py[m
+[36m@@ -15,13 +15,13 @@[m [mclass SkillManager:[m
+ [m
+         self.skills = loader.load()[m
+ [m
+[31m-    def execute(self, command):[m
+[32m+[m[32m    def execute(self, decision):[m
+ [m
+         for skill in self.skills:[m
+ [m
+             [m
+ [m
+[31m-            if skill.can_handle(command):[m
+[32m+[m[32m            if skill.can_handle(decision):[m
+ [m
+[31m-                return skill.execute(command)[m
+[32m+[m[32m                return skill.execute(decision)[m
+         return None[m
+\ No newline at end of file[m
+[1mdiff --git a/modules/nlp/__pycache__/entity_extractor.cpython-314.pyc b/modules/nlp/__pycache__/entity_extractor.cpython-314.pyc[m
+[1mindex f9dcf19..452fc16 100644[m
+Binary files a/modules/nlp/__pycache__/entity_extractor.cpython-314.pyc and b/modules/nlp/__pycache__/entity_extractor.cpython-314.pyc differ
+[1mdiff --git a/modules/nlp/__pycache__/intent_classifier.cpython-314.pyc b/modules/nlp/__pycache__/intent_classifier.cpython-314.pyc[m
+[1mindex f3ec3b9..063b191 100644[m
+Binary files a/modules/nlp/__pycache__/intent_classifier.cpython-314.pyc and b/modules/nlp/__pycache__/intent_classifier.cpython-314.pyc differ
+[1mdiff --git a/modules/nlp/__pycache__/intents.cpython-314.pyc b/modules/nlp/__pycache__/intents.cpython-314.pyc[m
+[1mindex 4b28c11..21603d4 100644[m
+Binary files a/modules/nlp/__pycache__/intents.cpython-314.pyc and b/modules/nlp/__pycache__/intents.cpython-314.pyc differ
+[1mdiff --git a/modules/nlp/__pycache__/normalizer.cpython-314.pyc b/modules/nlp/__pycache__/normalizer.cpython-314.pyc[m
+[1mindex afcab9b..7792b83 100644[m
+Binary files a/modules/nlp/__pycache__/normalizer.cpython-314.pyc and b/modules/nlp/__pycache__/normalizer.cpython-314.pyc differ
+[1mdiff --git a/modules/nlp/entity_extractor.py b/modules/nlp/entity_extractor.py[m
+[1mindex 8d0ab38..e47198d 100644[m
+[1m--- a/modules/nlp/entity_extractor.py[m
+[1m+++ b/modules/nlp/entity_extractor.py[m
+[36m@@ -3,7 +3,7 @@[m [mEntity Extractor[m
+ Project PEGASUS[m
+ """[m
+ [m
+[31m-from modules.nlp.intents import INTENTS[m
+[32m+[m[32mfrom modules.nlp.intents import PATTERNS[m
+ [m
+ [m
+ class EntityExtractor:[m
+[36m@@ -19,7 +19,7 @@[m [mclass EntityExtractor:[m
+             return None[m
+ [m
+         # Find prefixes for this intent[m
+[31m-        prefixes = INTENTS.get(intent, [])[m
+[32m+[m[32m        prefixes = PATTERNS.get(intent, [])[m
+ [m
+         for prefix in prefixes:[m
+ [m
+[1mdiff --git a/modules/nlp/intent_classifier.py b/modules/nlp/intent_classifier.py[m
+[1mindex 9372ffa..e8a97c6 100644[m
+[1m--- a/modules/nlp/intent_classifier.py[m
+[1m+++ b/modules/nlp/intent_classifier.py[m
+[36m@@ -3,7 +3,7 @@[m [mIntent Classifier[m
+ Project PEGASUS[m
+ """[m
+ [m
+[31m-from modules.nlp.intents import INTENTS[m
+[32m+[m[32mfrom modules.nlp.intents import PATTERNS[m
+ [m
+ [m
+ class IntentClassifier:[m
+[36m@@ -13,55 +13,67 @@[m [mclass IntentClassifier:[m
+         command = command.lower().strip()[m
+ [m
+         # Greeting[m
+[31m-        if command in INTENTS["greeting"]:[m
+[32m+[m[32m        if command in PATTERNS["greeting"]:[m
+             return "greeting"[m
+ [m
+         # Open App[m
+[31m-        for prefix in INTENTS["open_app"]:[m
+[32m+[m[32m        for prefix in PATTERNS["open"]:[m
+             if command.startswith(prefix):[m
+                 return "open"[m
+ [m
+         # Search[m
+[31m-        for prefix in INTENTS["search"]:[m
+[32m+[m[32m        for prefix in PATTERNS["search"]:[m
+             if command.startswith(prefix):[m
+                 return "search"[m
+ [m
+         # Memory[m
+[31m-        for prefix in INTENTS["remember"]:[m
+[32m+[m[32m        for prefix in PATTERNS["remember"]:[m
+             if command.startswith(prefix):[m
+                 return "remember"[m
+ [m
+[31m-        for prefix in INTENTS["recall"]:[m
+[32m+[m[32m        for prefix in PATTERNS["recall"]:[m
+             if command.startswith(prefix):[m
+                 return "recall"[m
+ [m
+     [m
+                 # Create Folder[m
+[31m-        for prefix in INTENTS["create_folder"]:[m
+[32m+[m[32m        for prefix in PATTERNS["create_folder"]:[m
+ [m
+             if command.startswith(prefix):[m
+                 return "create_folder"[m
+ [m
+         # Create File[m
+[31m-        for prefix in INTENTS["create_file"]:[m
+[32m+[m[32m        for prefix in PATTERNS["create_file"]:[m
+ [m
+             if command.startswith(prefix):[m
+                 return "create_file"[m
+ [m
+         # Delete Folder[m
+[31m-        for prefix in INTENTS["delete_folder"]:[m
+[32m+[m[32m        for prefix in PATTERNS["delete_folder"]:[m
+ [m
+             if command.startswith(prefix):[m
+                 return "delete_folder"[m
+ [m
+         # Delete File[m
+[31m-        for prefix in INTENTS["delete_file"]:[m
+[32m+[m[32m        for prefix in PATTERNS["delete_file"]:[m
+ [m
+             if command.startswith(prefix):[m
+                 return "delete_file"[m
+ [m
+         # Rename Folder[m
+[31m-        for prefix in INTENTS["rename_folder"]:[m
+[32m+[m[32m        for prefix in PATTERNS["rename_folder"]:[m
+ [m
+             if command.startswith(prefix):[m
+[31m-                return "rename_folder"[m
+\ No newline at end of file[m
+[32m+[m[32m                return "rename_folder"

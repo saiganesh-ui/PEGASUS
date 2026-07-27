@@ -21,7 +21,7 @@ class SearchSkill(BaseSkill):
 
     def execute(self, decision):
 
-        query = decision["entity"]
+        query = decision["entity"]["query"]
 
         self.search.execute(query)
 

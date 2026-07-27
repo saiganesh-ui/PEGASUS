@@ -22,22 +22,24 @@ class MemorySkill(BaseSkill):
             "remember",
             "recall"
         )
+    
     def execute(self, decision):
 
         intent = decision["intent"]
-        entity = decision["entity"]
+        key = decision["entity"]["key"]
+        value = decision["entity"]["value"]
 
         # Remember
         if intent == "remember":
 
-            if "=" not in entity:
+            if "=" not in value:
 
                 return {
                     "type": "response",
                     "message": "Use: remember key=value"
                 }
 
-            key, value = entity.split("=", 1)
+            key, value = value.split("=", 1)
 
             key = key.strip()
             value = value.strip()
@@ -52,7 +54,7 @@ class MemorySkill(BaseSkill):
             }
 
         # Recall
-        key = entity.strip()
+        key = decision["entity"]["key"]
 
         value = self.memory.recall(key)
 

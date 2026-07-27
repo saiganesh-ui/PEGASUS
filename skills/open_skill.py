@@ -21,7 +21,7 @@ class OpenSkill(BaseSkill):
 
     def execute(self, decision):
 
-        app = decision["entity"]
+        app = decision["entity"]["app"]
 
         success = self.opener.execute(app)
 

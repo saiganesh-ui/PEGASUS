@@ -12,21 +12,65 @@ class EntityExtractor:
 
         command = command.strip()
 
-        if intent == "unknown":
+        if intent in ("unknown", "greeting"):
             return None
 
-        if intent == "greeting":
-            return None
-
-        # Find prefixes for this intent
         prefixes = PATTERNS.get(intent, [])
 
         for prefix in prefixes:
 
             if command.lower().startswith(prefix.lower()):
 
-                entity = command[len(prefix):].strip()
+                value = command[len(prefix):].strip()
 
-                return entity if entity else None
+                if intent == "open":
+                    return {
+                        "app": value
+                    }
+
+                elif intent == "search":
+                    return {
+                        "query": value
+                    }
+
+                elif intent == "remember":
+
+                    if "=" not in value:
+                        return None
+
+                    key, val = value.split("=", 1)
+
+                    return {
+                        "key": key.strip(),
+                        "value": val.strip()
+                    }
+
+                elif intent == "recall":
+
+                    return {
+                        "key": value
+                    }
+
+                elif intent in (
+                    "create_folder",
+                    "create_file",
+                    "delete_folder",
+                    "delete_file",
+                    "rename_folder"
+                ):
+
+                    return {
+                        "name": value
+                    }
+
+                elif intent == "system":
+
+                    return {
+                        "command": command
+                    }
+
+                return {
+                    "value": value
+                }
 
         return None

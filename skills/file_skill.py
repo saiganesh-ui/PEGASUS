@@ -9,9 +9,9 @@ from modules.actions.file_action import FileAction
 
 class FileSkill(BaseSkill):
 
-    def __init__(self, context):
+    def __init__(self, context, scheduler=None):
 
-        super().__init__(context)
+        super().__init__(context, scheduler)
 
         self.file = FileAction()
 

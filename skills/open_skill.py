@@ -9,9 +9,9 @@ from modules.actions.open_action import OpenAction
 
 class OpenSkill(BaseSkill):
 
-    def __init__(self, context):
+    def __init__(self, context, scheduler=None):
 
-        super().__init__(context)
+        super().__init__(context, scheduler)
 
         self.opener = OpenAction()
 
@@ -28,7 +28,7 @@ class OpenSkill(BaseSkill):
         if success:
 
             self.context.set("last_app", app)
-            self.context.set("last_command", decision["command"])
+            self.context.set("last_command", decision["command"])   
 
             return {
                 "type": "response",

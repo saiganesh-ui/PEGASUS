@@ -9,7 +9,9 @@ from modules.actions.search_action import SearchAction
 
 class SearchSkill(BaseSkill):
 
-    def __init__(self, context):
+    def __init__(self, context, scheduler=None):
+
+        super().__init__(context, scheduler)
 
         super().__init__(context)
 

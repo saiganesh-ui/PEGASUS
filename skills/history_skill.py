@@ -8,32 +8,30 @@ from skills.base_skill import BaseSkill
 
 class HistorySkill(BaseSkill):
 
-    def __init__(self, context):
+    def __init__(self, context, scheduler=None):
 
+        super().__init__(context, scheduler)
         super().__init__(context)
 
     def can_handle(self, decision):
-
         return decision["intent"] == "history"
 
     def execute(self, decision):
 
-        app = self.context.get("last_app")
+        history = self.context.get_history()
 
-        if app:
-
+        if not history:
             return {
-
                 "type": "response",
-
-                "message": f"The last app you opened was {app}."
-
+                "message": "No command history available."
             }
 
+        lines = ["Recent Commands:"]
+
+        for index, command in enumerate(history, start=1):
+            lines.append(f"{index}. {command}")
+
         return {
-
             "type": "response",
-
-            "message": "You haven't opened any application yet."
-
+            "message": "\n".join(lines)
         }

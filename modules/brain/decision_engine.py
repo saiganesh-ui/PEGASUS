@@ -1,16 +1,22 @@
 """
 Decision Engine
-
 Project PEGASUS
 
-The brain never directly performs tasks.
-
-It decides which subsystem should handle the request.
+Creates a structured decision object from
+the NLP pipeline output.
 """
 
 
 class DecisionEngine:
 
-    def decide(self):
+    def decide(self, command, intent, entity):
 
-        pass
+        if intent == "how_are_you":
+            intent = "status"
+
+        return {
+            "intent": intent,
+            "entity": entity,
+            "command": command,
+            "confidence": 1.0 if intent != "unknown" else 0.0
+        }

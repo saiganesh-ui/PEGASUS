@@ -13,7 +13,7 @@ class OpenAction:
 
         "chrome": r"C:\Program Files\Google\Chrome\Application\chrome.exe",
 
-        "vscode": "code",
+        "vscode": r"C:\Program Files\Microsoft VS Code\Code.exe",
 
         "notepad": "notepad",
 
@@ -28,9 +28,17 @@ class OpenAction:
         app = app.lower()
 
         if app not in self.APPS:
-
             return False
 
-        subprocess.Popen(self.APPS[app])
+        if app == "chrome":
+
+            subprocess.Popen([
+                self.APPS["chrome"],
+                "--profile-directory=Default"
+            ])
+
+        else:
+
+            subprocess.Popen(self.APPS[app])
 
         return True

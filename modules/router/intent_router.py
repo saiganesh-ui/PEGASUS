@@ -26,4 +26,4 @@ class IntentRouter:
 
             return decision
 
-        return handler.execute(decision)
+        return handler.handle(decision)

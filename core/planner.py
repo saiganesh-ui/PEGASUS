@@ -8,7 +8,9 @@ print(">>> LOADED NEW PLANNER <<<")
 from modules.nlp.intent_classifier import IntentClassifier
 from modules.nlp.entity_extractor import EntityExtractor
 from modules.nlp.normalizer import Normalizer
-
+from modules.brain.decision_engine import DecisionEngine
+from modules.nlp.natural_language_detector import NaturalLanguageDetector
+from modules.brain.execution_plan import ExecutionPlan
 
 
 class Planner:
@@ -18,28 +20,34 @@ class Planner:
         self.classifier = IntentClassifier()
         self.extractor = EntityExtractor()
         self.normalizer = Normalizer()
-
+        self.decision_engine = DecisionEngine()
+        self.nl = NaturalLanguageDetector()
+        self.execution_plan = ExecutionPlan()
     def plan(self, command):
 
         command = self.normalizer.normalize(command)
 
-        print("Normalized:", command)   
+        natural = self.nl.detect(command)
 
-        intent = self.classifier.classify(command)
+        if natural:
 
-        entity = self.extractor.extract(
-            command,
-            intent
+            intent = natural["intent"]
+            entity = natural["entity"]
+
+        else:
+
+            intent = self.classifier.classify(command)
+            entity = self.extractor.extract(command, intent)
+
+        self.execution_plan.clear()
+
+        self.execution_plan.add(
+            intent,
+            entity
         )
 
-        return {
-             
-            "intent": intent,
-
-            "entity": entity,
-
-            "command": command,
-
-            "confidence": 1.0 if intent != "unknown" else 0.0
-
-        }
+        return self.decision_engine.decide(
+            command,
+            intent,
+            entity
+        )

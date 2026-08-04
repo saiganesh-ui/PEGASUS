@@ -14,8 +14,6 @@ class Normalizer:
         "could",
         "would",
         "will",
-        "you",
-        "me",
         "for",
         "kindly",
         "to",
@@ -28,9 +26,18 @@ class Normalizer:
 
         text = text.lower()
 
-        # Remove punctuation
+        # Remove punctuation except '='
+        punctuation = (
+            string.punctuation
+            .replace("=", "")
+            .replace(".", "")
+            .replace(":", "")
+            .replace("/", "")
+            .replace("\\", "")
+            .replace("-", "")
+        )
         text = text.translate(
-            str.maketrans("", "", string.punctuation)
+            str.maketrans("", "", punctuation)
         )
 
         words = []

@@ -10,7 +10,9 @@ from core.registry import CommandRegistry
 
 class SystemSkill(BaseSkill):
 
-    def __init__(self, context):
+    def __init__(self, context, scheduler=None):
+
+        super().__init__(context, scheduler)
 
         super().__init__(context)
 
@@ -31,12 +33,16 @@ class SystemSkill(BaseSkill):
 
     def execute(self, decision):
 
-        command = decision["entity"] or decision["command"]
+        # Entity is now a dictionary
+        if decision["entity"]:
+            command = decision["entity"].get("command", decision["command"])
+        else:
+            command = decision["command"]
 
         result = self.registry.execute(command.lower())
 
         if result:
-            return {    
+            return {
                 "type": "response",
                 "message": result
             }

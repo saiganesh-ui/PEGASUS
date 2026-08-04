@@ -9,9 +9,10 @@ import importlib
 
 class SkillLoader:
 
-    def __init__(self, context):
+    def __init__(self, context, scheduler):
 
         self.context = context
+        self.scheduler = scheduler
 
     def load(self):
 
@@ -60,9 +61,21 @@ class SkillLoader:
 
             )
 
-            skills.append(
+            try:
 
-                cls(self.context)
+                print(f"Loaded: {class_name}")
 
-            )
-        return skills
+                skills.append(
+
+                    cls(
+                        self.context,
+                        self.scheduler
+                    )
+
+                )
+
+            except Exception as e:
+
+                print(f"Failed to load {class_name}: {e}")
+
+        return skills        

@@ -3,6 +3,8 @@ Intent Patterns
 Project PEGASUS
 """
 
+
+
 PATTERNS = {
 
     "greeting": [
@@ -50,44 +52,27 @@ PATTERNS = {
 
     "how_are_you": [
 
-        "how are you",
-        "how are you doing",
-        "how do you feel",
-        "are you okay",
-        "are you functioning properly",
-        "are you operational",
-        "are you working",
-        "are you running",
-        "are you online",
-        "are you active",
-        "are you responsive",
-        "are you functioning well",
-        "are you in good condition",
-        "are you in good shape",
-        "are you in good form",
-        "are you in good health",
-        "are you in good working order",
-        "are you in good working condition",
-        "you alright",
-        "you okay",
-        "you good",
-        "you functioning properly",
-        "you operational",
-        "you working",
-        "you running",
-        "you online",
-        "you active",
-        "you responsive",
-        "you functioning well",
-        "you in good condition",
-        "you in good shape",
-        "you in good form",
-        "you in good health",
-        "you in good working order",
-        "you in good working condition",
-        "you doing well"
+    "how are",
+    "how are you",
+    "how are u",
+    "how r you",
+    "how r u",
+    "how are you doing",
+    "how do you feel",
+    "are you okay",
+    "are you functioning properly",
+    "are you operational",
+    "are you working",
+    "are you running",
+    "are you online",
+    "are you active",
+    "are you responsive",
+    "you alright",
+    "you okay",
+    "you good",
+    "you doing well"
 
-    ],
+],
     
     "open": [
 
@@ -155,12 +140,21 @@ PATTERNS = {
 
     ],
 
-    "remember": [
+   "remember": [
 
-    "remember "
+    "remember ",
 
-    ],
+    "my name is ",
 
+    "my city is ",
+
+    "my favorite game is ",
+
+    "my favourite game is ",
+
+    "my college is "
+
+],
     "recall": [
 
         "recall ",
@@ -198,14 +192,22 @@ PATTERNS = {
         "rename folder ",
 
     ],
-
     "system": [
-    "cpu",
-    "memory",
-    "ram",
-    "disk",
-    "storage",
-    "system info"
+
+        "system",
+
+        "cpu",
+
+        "memory",
+
+        "ram",
+
+        "disk",
+
+        "storage",
+
+        "system info"
+
     ],
 
     "status": [
@@ -214,9 +216,129 @@ PATTERNS = {
     ],
 
     "history": [
-        "last app",
-        "last application",
-        "last_app"
-    ]
+
+        "history",
+
+        "show history",
+
+        "command history",
+
+        "show command history",
+
+        "recent commands",
+
+        "last commands"
+
+    ],
+
+    "time": [
+
+    "time",
+
+    "current time",
+
+    "what time is it"
+
+    ],
+
+    "date": [
+
+    "date",
+
+    "today's date",
+
+    "what is today's date"
+
+],
+
+    "day": [
+
+    "day",
+
+    "what day is today"
+
+],
+
+
+    "reminder": [
+
+    "remind me ",
+
+    "remind me to ",
+
+    "remind",
+
+    "remind "
+
+],
+    "knowledge": [
+
+    "what do you know about me",
+
+    "show my profile",
+
+    "my profile",
+
+    "about me",
+
+    "who am i"
+
+],
+
+"forget": [
+
+    "forget ",
+
+    "delete memory ",
+
+    "remove memory ",
+
+    "erase "
+
+],
+
+"weather": [
+
+    "weather",
+
+    "weather today",
+
+    "what is the weather",
+
+    "weather in",
+
+    "temperature",
+
+    "forecast"
+
+],
+
+"help": [
+
+    "help",
+
+    "commands",
+
+    "what can you do",
+
+    "show commands",
+
+    "show help"
+
+],
+
+"vision": [
+
+    "analyze screen",
+
+    "look at screen",
+
+    "read screen",
+
+    "scan screen"
+
+],
 
 }
+
+INTENTS = PATTERNS

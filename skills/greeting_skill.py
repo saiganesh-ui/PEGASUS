@@ -13,7 +13,9 @@ from skills.base_skill import BaseSkill
 
 class GreetingSkill(BaseSkill):
 
-    def __init__(self, context):
+    def __init__(self, context, scheduler=None):
+
+        super().__init__(context, scheduler)
 
         super().__init__(context)
 

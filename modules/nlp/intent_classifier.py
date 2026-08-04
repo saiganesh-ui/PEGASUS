@@ -8,13 +8,17 @@ from modules.nlp.intents import PATTERNS
 
 class IntentClassifier:
 
-    def classify(self, command):
+   def classify(self, command):
 
         command = command.lower().strip()
 
         # Greeting
         if command in PATTERNS["greeting"]:
             return "greeting"
+
+        # How are you
+        if command in PATTERNS["how_are_you"]:
+            return "how_are_you"
 
         # Open App
         for prefix in PATTERNS["open"]:
@@ -35,34 +39,39 @@ class IntentClassifier:
             if command.startswith(prefix):
                 return "recall"
 
-    
-                # Create Folder
-        for prefix in PATTERNS["create_folder"]:
+        # Knowledge
 
+        for phrase in PATTERNS["knowledge"]:
+
+            if command == phrase:
+                return "knowledge"
+
+        for prefix in PATTERNS["forget"]:
+            if command.startswith(prefix):
+                return "forget"
+
+        # Create Folder
+        for prefix in PATTERNS["create_folder"]:
             if command.startswith(prefix):
                 return "create_folder"
 
         # Create File
         for prefix in PATTERNS["create_file"]:
-
             if command.startswith(prefix):
                 return "create_file"
 
         # Delete Folder
         for prefix in PATTERNS["delete_folder"]:
-
             if command.startswith(prefix):
                 return "delete_folder"
 
         # Delete File
         for prefix in PATTERNS["delete_file"]:
-
             if command.startswith(prefix):
                 return "delete_file"
 
         # Rename Folder
         for prefix in PATTERNS["rename_folder"]:
-
             if command.startswith(prefix):
                 return "rename_folder"
 
@@ -73,7 +82,34 @@ class IntentClassifier:
             return "status"
 
         if command in PATTERNS["history"]:
-            return "history"    
+            return "history"
 
-                    
-        return "unknown"        
+        if command in PATTERNS["time"]:
+            return "time"
+
+        if command in PATTERNS["date"]:
+            return "date"
+
+        if command in PATTERNS["day"]:
+            return "day"
+
+        # Reminder
+        for prefix in PATTERNS["reminder"]:
+            if command.startswith(prefix):
+                return "reminder"
+
+        # Weather
+        for prefix in PATTERNS["weather"]:
+            if command.startswith(prefix):
+                return "weather"
+
+        # Vision    
+        if command in PATTERNS["vision"]:
+            return "vision"    
+
+        # Help
+        if command in PATTERNS["help"]:
+
+            return "help"
+
+        return "unknown"

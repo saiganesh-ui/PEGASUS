@@ -11,4 +11,10 @@ while True:
 
     result = engine.process(text)
 
-    print(result)
+    if isinstance(result, list):
+
+        for response in result:
+            print(response)
+
+    else:
+        print(result)

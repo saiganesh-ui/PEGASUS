@@ -28,3 +28,12 @@ class Memory:
         print("Memory not found.")
 
         return None
+
+    def get_all(self):
+        return self.database.get_all()
+
+    def delete(self, key):
+        self.database.delete_memory(key)
+
+    def clear(self):
+        self.database.clear_memories()

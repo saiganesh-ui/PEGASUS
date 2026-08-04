@@ -9,9 +9,12 @@ from modules import command
 
 class SkillManager:
 
-    def __init__(self, context):
+    def __init__(self, context, scheduler):
 
-        loader = SkillLoader(context)
+        loader = SkillLoader(
+            context,
+            scheduler
+        )
 
         self.skills = loader.load()
 

@@ -25,6 +25,12 @@ class IntentClassifier:
             if command.startswith(prefix):
                 return "open"
 
+
+        # Close App
+        for prefix in PATTERNS["close"]:
+            if command.startswith(prefix):
+                return "close"
+
         # Search
         for prefix in PATTERNS["search"]:
             if command.startswith(prefix):

@@ -109,6 +109,13 @@ PATTERNS = {
         "open software",
     ],
 
+    "close": [
+
+            "close",
+            "kill task",
+            "terminate",
+    ],
+
 
 
     "search": [

@@ -28,6 +28,10 @@ class EntityExtractor:
         if intent == "open":
             return {"app": value}
 
+        # Close
+        if intent == "close":
+            return {"app": value}
+
         # SEARCH
         if intent == "search":
             return {"query": value}

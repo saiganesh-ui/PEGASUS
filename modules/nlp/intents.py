@@ -170,6 +170,37 @@ PATTERNS = {
 
     ],   
 
+
+    "running_apps": [
+
+    "running apps",
+
+    "list running apps",
+
+    "running applications",
+
+    "list running applications",
+
+    "show running apps",
+
+    "show running applications",
+
+    "list processes",
+
+    "running processes"
+
+],
+
+    "restart": [
+
+    "restart",
+
+    "reopen",
+
+    "reload"
+
+],
+
     "create_folder": [
 
     "create folder ",
@@ -343,6 +374,46 @@ PATTERNS = {
     "read screen",
 
     "scan screen"
+
+],
+
+"focus": [
+
+    "focus ",
+
+    "switch to ",
+
+    "activate ",
+
+    "bring up ",
+
+    "show "
+
+],
+"open_folder": [
+
+    "open folder ",
+
+    "show folder ",
+
+    "browse folder ",
+
+    "cd"
+
+],
+"active_window": [
+
+    "active window",
+
+    "current window",
+
+    "what window is active",
+
+    "what app am i using",
+
+    "current app",
+
+    "active app"
 
 ],
 

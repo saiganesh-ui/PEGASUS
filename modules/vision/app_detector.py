@@ -186,6 +186,9 @@ class AppDetector:
 
             if keyword in text:
 
-                return app
+                return {
+                    "name": app,
+                    "confidence": 1.0
+                }
 
-        return "Unknown"
+        return None

@@ -16,7 +16,6 @@ class Normalizer:
         "will",
         "for",
         "kindly",
-        "to",
         "the",
         "a",
         "an"
@@ -35,6 +34,7 @@ class Normalizer:
             .replace("/", "")
             .replace("\\", "")
             .replace("-", "")
+            
         )
         text = text.translate(
             str.maketrans("", "", punctuation)

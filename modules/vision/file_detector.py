@@ -14,6 +14,9 @@ class FileDetector:
 
         if match:
 
-            return match.group()
+            return {
+                "name": match.group(),
+                "confidence": 1.0
+            }
 
         return None

@@ -20,6 +20,11 @@ class IntentClassifier:
         if command in PATTERNS["how_are_you"]:
             return "how_are_you"
 
+        # OPEN FOLDER
+        for prefix in PATTERNS["open_folder"]:
+            if command.startswith(prefix):
+                 return "open_folder"
+
         # Open App
         for prefix in PATTERNS["open"]:
             if command.startswith(prefix):
@@ -30,6 +35,24 @@ class IntentClassifier:
         for prefix in PATTERNS["close"]:
             if command.startswith(prefix):
                 return "close"
+
+        # Restart App
+        for prefix in PATTERNS["restart"]:
+            if command.startswith(prefix):
+                return "restart"
+
+        # Running Applications
+        if command in PATTERNS["running_apps"]:
+            return "running_apps"
+
+        # Focus Application
+        for prefix in PATTERNS["focus"]:
+            if command.startswith(prefix):
+                return "focus"
+
+        #ACTIVE WINDOW
+        if command in PATTERNS["active_window"]:
+            return "active_window"
 
         # Search
         for prefix in PATTERNS["search"]:
@@ -55,6 +78,8 @@ class IntentClassifier:
         for prefix in PATTERNS["forget"]:
             if command.startswith(prefix):
                 return "forget"
+
+        
 
         # Create Folder
         for prefix in PATTERNS["create_folder"]:

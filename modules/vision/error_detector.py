@@ -56,9 +56,9 @@ class ErrorDetector:
 
                 return {
 
-                    "error": error,
-
-                    "explanation": explanation
+                    "name": error,
+                    "message": explanation,
+                    "confidence": 1.0
 
                 }
 

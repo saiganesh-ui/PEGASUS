@@ -31,6 +31,29 @@ class EntityExtractor:
         # Close
         if intent == "close":
             return {"app": value}
+        
+        # RESTART
+        if intent == "restart":
+            return {"app": value}
+
+        # RUNNING APPS
+        if intent == "running_apps":
+            return {}
+
+        # FOCUS
+        if intent == "focus":
+            return {
+                "app": value
+            }
+
+        # OPEN FOLDER
+        if intent == "open_folder":
+            return {
+                "folder": value
+            }
+        #ACTIVE WINDOW
+        if intent == "active_window":
+            return {}
 
         # SEARCH
         if intent == "search":

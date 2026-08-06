@@ -12,7 +12,7 @@ from modules.services.time_service import TimeService
 from modules.services.system_service import SystemService
 from modules.actions.open_action import OpenAction
 from modules.actions.search_action import SearchAction
-from modules.actions.file_action import FileAction
+from modules.actions.workspace_action import FileAction
 
 
 

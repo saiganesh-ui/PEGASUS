@@ -7,11 +7,7 @@ from skills.base_skill import BaseSkill
 
 from modules.vision.screenshot import Screenshot
 from modules.vision.ocr import OCR
-from modules.vision.error_detector import ErrorDetector
-from modules.vision.app_detector import AppDetector
-from modules.vision.file_detector import FileDetector
-from modules.vision.line_detector import LineDetector
-
+from modules.vision.screen_analyzer import ScreenAnalyzer
 
 class VisionSkill(BaseSkill):
 
@@ -21,10 +17,7 @@ class VisionSkill(BaseSkill):
 
         self.screenshot = Screenshot()
         self.ocr = OCR()
-        self.detector = ErrorDetector()
-        self.app_detector = AppDetector()
-        self.file_detector = FileDetector()
-        self.line_detector = LineDetector()
+        self.analyzer = ScreenAnalyzer()
 
     def can_handle(self, decision):
 
@@ -36,14 +29,6 @@ class VisionSkill(BaseSkill):
 
         text = self.ocr.read(path)
 
-        app = self.app_detector.detect(text)
-
-        file = self.file_detector.detect(text)
-
-        line = self.line_detector.detect(text)
-
-        error = self.detector.detect(text)
-
         if not text.strip():
 
             return {
@@ -51,32 +36,43 @@ class VisionSkill(BaseSkill):
                 "message": "I couldn't detect any readable text."
             }
 
+        result = self.analyzer.analyze(text)
+
         message = ""
 
-        message += f"Application : {app}\n"
+        if result.application:
+            message += f"Application : {result.application['name']}\n"
 
-        if file:
-            message += f"Python File : {file}\n"
+        if result.file:
+            message += f"File : {result.file['name']}\n"
 
-        if line:
-            message += f"Line : {line}\n"
+        if result.language:
+            message += f"Language : {result.language['name']}\n"
 
-        if error:
+        if result.line:
+            message += f"Line : {result.line['number']}\n"
 
-            message += f"\nError : {error['error']}\n"
+        if result.error:
+            message += f"\nError : {result.error['name']}\n"
+            message += f"{result.error['message']}\n"
 
-            message += f"{error['explanation']}"
+        if result.reasoning:
 
+            message += "\nReasoning:\n"
+
+            for thought in result.reasoning:
+
+                message += f"- {thought}\n"
+
+            message += "\nDecision:\n"
+            message += result.decision
+        
         else:
-
-            message += "\nNo known Python error detected."
+            message += "\nNo known error detected."
 
         return {
-
             "type": "response",
-
             "message": message
-
         }
     
 

@@ -14,6 +14,9 @@ class LineDetector:
 
         if match:
 
-            return match.group(1)
+            return {
+                "number": int(match.group(1)),
+                "confidence": 1.0
+            }
 
         return None

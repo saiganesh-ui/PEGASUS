@@ -4,7 +4,7 @@ Project PEGASUS
 """
 
 from skills.base_skill import BaseSkill
-from modules.actions.file_action import FileAction
+from modules.actions.workspace_action import FileAction
 
 
 class FileSkill(BaseSkill):

@@ -17,9 +17,7 @@ class Pipeline:
         self.context = context
 
         self.reference_resolver = ReferenceResolver(context)
-
         self.command_splitter = CommandSplitter()
-
         self.voice = VoiceService()
 
     def run(self, command):
@@ -34,19 +32,14 @@ class Pipeline:
 
             self.context.add_history(command)
 
-            plan = self.planner.plan(command)
+            # Convert command -> decision
+            decision = self.planner.plan(command)
 
-            print(plan)
+            # Uncomment for debugging
+            # print(decision)
 
-            import traceback
-
-            try:
-                result = self.skills.execute(plan)
-
-            except Exception:
-
-                traceback.print_exc()
-                raise
+            # Execute skill
+            result = self.skills.execute(decision)
 
             results.append(result)
 
@@ -65,4 +58,3 @@ class Pipeline:
                 responses.append(result)
 
         return responses
-                    

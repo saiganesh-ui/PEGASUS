@@ -20,11 +20,12 @@ class SkillManager:
 
     def execute(self, decision):
 
-        for skill in self.skills:
+            for skill in self.skills:
 
-            
+                if skill.can_handle(decision):
 
-            if skill.can_handle(decision):
+                    return skill.execute(decision)
 
-                return skill.execute(decision)
-        return None
+            return None
+
+         

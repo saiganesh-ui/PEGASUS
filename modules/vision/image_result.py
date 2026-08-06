@@ -32,6 +32,7 @@ class ImageResult:
         self.confidence = 0.0
         self.reasoning = []
         self.decision = None
+        self.advice = []
 
     def to_dict(self):
 
@@ -45,6 +46,7 @@ class ImageResult:
             "reasoning": self.reasoning,
             "decision": self.decision,
             "text": self.text,
+            "advice": self.advice,
 
             "application": self.application,
             "file": self.file,

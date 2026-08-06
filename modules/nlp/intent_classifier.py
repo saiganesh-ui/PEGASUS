@@ -54,6 +54,10 @@ class IntentClassifier:
         if command in PATTERNS["active_window"]:
             return "active_window"
 
+        #WHAT AM I DOING
+        if command in PATTERNS["what_am_i_doing"]:
+            return "what_am_i_doing"
+
         # Search
         for prefix in PATTERNS["search"]:
             if command.startswith(prefix):

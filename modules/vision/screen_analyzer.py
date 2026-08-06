@@ -12,6 +12,7 @@ from modules.vision.line_detector import LineDetector
 from modules.vision.language_detector import LanguageDetector
 from modules.vision.reasoning_engine import ReasoningEngine
 from modules.vision.decision_engine import DecisionEngine
+from modules.vision.advice_engine import AdviceEngine
 
 
 class ScreenAnalyzer:
@@ -25,6 +26,7 @@ class ScreenAnalyzer:
         self.language_detector = LanguageDetector()
         self.reasoner = ReasoningEngine() 
         self.decision_engine = DecisionEngine()
+        self.adviser = AdviceEngine()
 
     def analyze(self, text):
 
@@ -108,5 +110,7 @@ class ScreenAnalyzer:
             result.reasoning = self.reasoner.think(result)
 
             result.decision = self.decision_engine.decide(result)
+
+            result.advice = self.adviser.advise(result)
 
         return result

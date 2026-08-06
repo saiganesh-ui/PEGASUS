@@ -66,6 +66,14 @@ class VisionSkill(BaseSkill):
 
             message += "\nDecision:\n"
             message += result.decision
+
+        if result.advice:
+
+            message += "\nAdvice:\n"
+
+            for item in result.advice:
+
+                message += f"- {item}\n"
         
         else:
             message += "\nNo known error detected."

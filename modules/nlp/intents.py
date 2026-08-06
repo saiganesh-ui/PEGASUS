@@ -416,6 +416,15 @@ PATTERNS = {
     "active app"
 
 ],
+"what_am_i_doing": [
+
+    "what am i doing",
+    "what am i working on",
+    "what am i working",
+    "what am i currently doing",
+    "current activity"
+
+],
 
 }
 

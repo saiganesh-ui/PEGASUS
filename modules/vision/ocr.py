@@ -1,3 +1,8 @@
+"""
+OCR
+Project PEGASUS
+"""
+
 import pytesseract
 from PIL import Image
 
@@ -10,9 +15,17 @@ class OCR:
             r"C:\Program Files\Tesseract-OCR\tesseract.exe"
         )
 
-    def read(self, image_path):
+    def read(self, source):
 
-        image = Image.open(image_path)
+        # If a file path is given
+        if isinstance(source, str):
+
+            image = Image.open(source)
+
+        # If a PIL Image is given
+        else:
+
+            image = source
 
         text = pytesseract.image_to_string(image)
 

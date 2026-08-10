@@ -44,7 +44,7 @@ class Brain:
             return {"type": "command", "message": ""}
 
         text = command.strip()
-        lower = self.normalizer.clean(text)
+        lower = self.normalizer.normalize(text)
 
         if lower in INTENTS["greeting"]:
             return self.router.execute("greeting")
@@ -95,10 +95,23 @@ class Brain:
                 return {"type": lower}
             
 
+                # Open folder
+        if lower.startswith("open folder "):
+            folder_name = text[len("open folder "):].strip()
+
+            return {
+                "type": "open_folder",
+                "folder": folder_name
+            }
+
+        # Generic application opening
         for verb in INTENTS["open"]:
             if lower == verb or lower.startswith(verb + " "):
                 app = text[len(verb):].strip() if lower != verb else ""
-                return {"type": "open", "app": app or "default"}
+                return {
+                    "type": "open",
+                    "app": app or "default"
+                }
 
         for prefix in INTENTS["search"]:
             if lower.startswith(prefix):

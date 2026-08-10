@@ -24,6 +24,19 @@ RESPONSES = {
 
     ],
 
+    "how_are_you": [
+
+    "I'm doing well, Ganesh.",
+    "I'm doing great. All systems are online.",
+    "I'm operating normally and ready to help.",
+    "I'm doing well, Sir. How can I assist you?",
+    "All systems are stable. I'm ready when you are.",
+    "I'm good, Ganesh. What would you like to do?",
+    "I'm functioning perfectly and ready to assist.",
+    "Doing well, Sir. Everything is running smoothly."
+
+],
+
     "status": [
 
         "I'm operating normally.",

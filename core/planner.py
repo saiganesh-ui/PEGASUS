@@ -11,6 +11,7 @@ from modules.nlp.normalizer import Normalizer
 from modules.brain.decision_engine import DecisionEngine
 from modules.nlp.natural_language_detector import NaturalLanguageDetector
 from modules.brain.execution_plan import ExecutionPlan
+from modules.nlp.confidence_engine import ConfidenceEngine
 
 
 class Planner:
@@ -23,6 +24,7 @@ class Planner:
         self.decision_engine = DecisionEngine()
         self.nl = NaturalLanguageDetector()
         self.execution_plan = ExecutionPlan()
+        self.confidence = ConfidenceEngine()
     def plan(self, command):
 
         command = self.normalizer.normalize(command)
@@ -46,8 +48,32 @@ class Planner:
             entity
         )
 
-        return self.decision_engine.decide(
+        decision = self.decision_engine.decide(
             command,
             intent,
             entity
         )
+
+        confidence = self.confidence.score(
+            intent,
+            entity
+        )
+
+        decision["confidence"] = confidence
+
+        # -----------------------------------------
+        # COMMAND SAFETY GATE
+        # -----------------------------------------
+
+        if confidence < 0.8:
+
+            decision["approved"] = False
+            decision["message"] = (
+                "I'm not confident enough to execute that command."
+            )
+
+        else:
+
+            decision["approved"] = True
+
+        return decision

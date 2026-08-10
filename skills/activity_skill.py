@@ -21,7 +21,7 @@ class ActivitySkill(BaseSkill):
 
     def execute(self, decision):
 
-        result = self.vision.analyze()
+        result = self.vision.analyze_screen()
 
         return {
 

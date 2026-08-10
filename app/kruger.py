@@ -11,6 +11,7 @@ from modules.memory.session import Session
 from modules.services.time_service import TimeService
 from modules.services.system_service import SystemService
 from modules.actions.open_action import OpenAction
+from modules.actions.open_folder_action import OpenFolderAction 
 from modules.actions.search_action import SearchAction
 from modules.actions.workspace_action import FileAction
 
@@ -30,6 +31,7 @@ class Kruger:
         self.time = TimeService() 
         self.system = SystemService()  
         self.opener = OpenAction()
+        self.folder_opener = OpenFolderAction()
         self.search = SearchAction()
         self.files = FileAction()
 
@@ -159,6 +161,17 @@ class Kruger:
                 else:
 
                     print("Application not supported.")
+
+            elif decision["type"] == "open_folder":
+
+                success = self.folder_opener.execute(
+                    decision["folder"]
+                )
+
+                if success:
+                    print(f"Opening folder {decision['folder']}...")
+                else:
+                    print(f"I couldn't find folder {decision['folder']}.")
 
             elif decision["type"] == "search":
 

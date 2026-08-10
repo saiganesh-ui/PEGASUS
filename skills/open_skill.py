@@ -3,39 +3,31 @@ Open Skill
 Project PEGASUS
 """
 
-from skills.base_skill import BaseSkill
-from modules.actions.open_action import OpenAction
+from modules.execution.planner import ExecutionPlanner
+from modules.execution.executor import Executor
 
 
-class OpenSkill(BaseSkill):
+class OpenSkill:
 
     def __init__(self, context, scheduler=None):
 
-        super().__init__(context, scheduler)
+        self.context = context
+        self.scheduler = scheduler
 
-        self.opener = OpenAction()
+        self.planner = ExecutionPlanner()
+        self.executor = Executor()
 
     def can_handle(self, decision):
 
-        return decision["intent"] == "open"
+        return decision.get("intent") == "open"
 
     def execute(self, decision):
 
-        app = decision["entity"]["app"]
+        task = self.planner.plan(decision)
 
-        success = self.opener.execute(app)
-
-        if success:
-
-            self.context.set("last_app", app)
-            self.context.set("last_command", decision["command"])   
-
-            return {
-                "type": "response",
-                "message": f"Opening {app}."
-            }
+        result = self.executor.execute(task)
 
         return {
             "type": "response",
-            "message": f"I don't know how to open {app}."
+            "message": result.message
         }

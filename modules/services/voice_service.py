@@ -4,7 +4,9 @@ Project PEGASUS
 """
 
 import pyttsx3
+
 from modules.services.voice_settings import VoiceSettings
+
 
 class VoiceService:
 
@@ -17,30 +19,56 @@ class VoiceService:
         if not self.settings.enabled:
             return
 
+        if not text or not text.strip():
+            return
+
         print(f"[VOICE] {text}")
 
-        engine = pyttsx3.init()
+        engine = None
 
-        engine.setProperty("rate", self.settings.rate)
+        try:
 
-        engine.setProperty("volume", self.settings.volume)
+            engine = pyttsx3.init("sapi5")
 
-        voices = engine.getProperty("voices")
-
-        if voices:
-
-            index = min(
-                self.settings.voice_index,
-                len(voices) - 1
+            engine.setProperty(
+                "rate",
+                self.settings.rate
             )
 
             engine.setProperty(
-                "voice",
-                voices[index].id
+                "volume",
+                self.settings.volume
             )
 
-        engine.say(text)
+            voices = engine.getProperty("voices")
 
-        engine.runAndWait()
+            if voices:
 
-        engine.stop()
+                index = min(
+                    self.settings.voice_index,
+                    len(voices) - 1
+                )
+
+                engine.setProperty(
+                    "voice",
+                    voices[index].id
+                )
+
+            engine.say(text)
+
+            engine.runAndWait()
+
+        except Exception as e:
+
+            print(f"[VOICE ERROR] {e}")
+
+        finally:
+
+            if engine is not None:
+
+                try:
+                    engine.stop()
+                except Exception:
+                    pass
+
+                del engine

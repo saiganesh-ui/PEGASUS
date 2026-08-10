@@ -32,16 +32,43 @@ class Pipeline:
 
             self.context.add_history(command)
 
-            # Convert command -> decision
+            # -----------------------------------------
+            # COMMAND -> DECISION
+            # -----------------------------------------
+
             decision = self.planner.plan(command)
 
-            # Uncomment for debugging
-            # print(decision)
+            # -----------------------------------------
+            # CONFIDENCE SAFETY GATE
+            # -----------------------------------------
 
-            # Execute skill
+            if not decision.get("approved", True):
+
+                result = {
+                    "type": "response",
+                    "message": decision.get(
+                        "message",
+                        "I'm not confident enough to execute that command."
+                    )
+                }
+
+                results.append(result)
+
+                continue
+
+            # -----------------------------------------
+            # EXECUTE SKILL
+            # -----------------------------------------
+
             result = self.skills.execute(decision)
 
-            results.append(result)
+            if result:
+
+                results.append(result)
+
+        # -----------------------------------------
+        # RESPONSES
+        # -----------------------------------------
 
         responses = []
 

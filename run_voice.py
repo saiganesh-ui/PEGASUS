@@ -1,3 +1,8 @@
+"""
+KRUGER Voice Mode
+Project PEGASUS
+"""
+
 from core.engine import Engine
 
 from modules.services.microphone_service import MicrophoneService
@@ -8,44 +13,134 @@ from modules.services.wake_word_service import WakeWordService
 engine = Engine()
 
 mic = MicrophoneService()
-
 speech = SpeechService()
-
 wake = WakeWordService()
 
 
 print()
-
 print("K R U G E R")
-
 print("Voice Mode Online")
-
 print()
+print("Voice session active.")
+print("Say 'Kruger, sleep' to deactivate.")
+print("Say 'Kruger, exit' to shut down.")
+print()
+
+
+active = False
+
 
 while True:
 
-    audio = mic.record()
+    try:
 
-    text = speech.transcribe(audio)
+        audio = mic.record()
 
-    print()
+        if not audio:
+            continue
 
-    print("Detected:", text)
+        text = speech.transcribe(audio)
 
-    result = wake.process(text)
+        if not text:
+            continue
 
-    if not result["wake"]:
+        print()
+        print("Detected:", text)
 
-        continue
+        result = wake.process(text)
 
-    response = engine.process(result["command"])
+        # -------------------------------------------------
+        # WAKE WORD DETECTED
+        # -------------------------------------------------
 
-    if isinstance(response, list):
+        if result["wake"]:
 
-        for item in response:
+            command = result["command"].strip()
 
-            print(item)
+            # Wake word alone
+            if not command:
 
-    else:
+                active = True
 
-        print(response)
+                print("KRUGER: Voice session activated.")
+
+                continue
+
+            # -------------------------------------------------
+            # EXIT
+            # -------------------------------------------------
+
+            if command in [
+                "exit",
+                "quit",
+                "shutdown",
+                "shut down"
+            ]:
+
+                print("KRUGER: Shutting down.")
+
+                break
+
+            # -------------------------------------------------
+            # SLEEP
+            # -------------------------------------------------
+
+            if command in [
+                "sleep",
+                "go to sleep",
+                "stand by",
+                "standby"
+            ]:
+
+                active = False
+
+                print("KRUGER: Voice session deactivated.")
+
+                continue
+
+            # Wake word + command automatically activates session
+            active = True
+
+        # -------------------------------------------------
+        # IGNORE COMMAND IF SESSION IS NOT ACTIVE
+        # -------------------------------------------------
+
+        elif not active:
+
+            continue
+
+        else:
+
+            command = result["command"].strip()
+
+        # -------------------------------------------------
+        # EMPTY COMMAND
+        # -------------------------------------------------
+
+        if not command:
+
+            continue
+
+        # -------------------------------------------------
+        # EXECUTE
+        # -------------------------------------------------
+
+        response = engine.process(command)
+
+        print()
+
+        if isinstance(response, list):
+
+            for item in response:
+
+                print(item)
+
+        else:
+
+            print(response)
+
+    except KeyboardInterrupt:
+
+        print()
+        print("KRUGER: Voice Mode stopped.")
+        break

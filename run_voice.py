@@ -27,7 +27,7 @@ print("Say 'Kruger, exit' to shut down.")
 print()
 
 
-active = False
+active = True
 
 
 while True:
@@ -70,27 +70,29 @@ while True:
             # EXIT
             # -------------------------------------------------
 
-            if command in [
+            if any(word in command for word in [
                 "exit",
                 "quit",
                 "shutdown",
                 "shut down"
-            ]:
+            ]):
 
                 print("KRUGER: Shutting down.")
 
                 break
 
+
+
             # -------------------------------------------------
             # SLEEP
             # -------------------------------------------------
 
-            if command in [
+            if any(word in command for word in [
                 "sleep",
                 "go to sleep",
                 "stand by",
                 "standby"
-            ]:
+            ]):
 
                 active = False
 
@@ -120,6 +122,14 @@ while True:
         if not command:
 
             continue
+
+        # -------------------------------------------------
+        # WHILE ACTIVE, USE FULL TEXT FOR DIRECT COMMANDS
+        # -------------------------------------------------
+
+        if active and not result["wake"]:
+
+            command = text.strip()
 
         # -------------------------------------------------
         # EXECUTE

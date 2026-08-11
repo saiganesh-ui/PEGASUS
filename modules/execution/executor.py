@@ -44,16 +44,15 @@ class Executor:
 
                 action = OpenAction()
 
-                success = action.execute(app)
+                success, message = action.execute(app)
 
                 if not success:
 
                     result.success = False
-                    result.message = (
-                        f"I couldn't find or open the application '{app}'."
-                    )
-
+                    result.message = message
                     return result
+
+                result.message = message
                 
             elif step == "close":
 
@@ -82,6 +81,8 @@ class Executor:
                 print("Verifying...")
 
         result.success = True
-        result.message = f"{task.intent.capitalize()} plan executed."
+
+        if not result.message:
+            result.message = f"{task.intent.capitalize()} plan executed."
 
         return result

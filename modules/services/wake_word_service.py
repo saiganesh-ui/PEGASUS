@@ -13,9 +13,15 @@ class WakeWordService:
         self.words = [
             "kruger",
             "krugar",
-            "kurokar",
+            "krugarh",
+            "kroger",
+            "ruger",
+            "roger",
+            "rogar",
+            "roja",
             "crewger",
-            "krugarh"
+            "krugers",
+            "kruger's",
         ]
 
         self.fillers = [
@@ -29,7 +35,9 @@ class WakeWordService:
 
     def process(self, text):
 
-        text = text.lower().strip()
+        text = text.lower()
+        text = text.replace("'s", "s")
+        text = text.replace("’s", "s")
 
         for word in self.words:
 

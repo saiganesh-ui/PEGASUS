@@ -1,45 +1,47 @@
-"""
-Focus Action
-Project PEGASUS
-"""
-
-import win32gui
-import win32con
-
+from pywinauto import Application
+from pywinauto.findwindows import find_windows
 
 class FocusAction:
 
+    TITLES = {
+        "chrome": "Chrome",
+        "edge": "Edge",
+        "firefox": "Firefox",
+        "vscode": "Visual Studio Code",
+        "vs code": "Visual Studio Code",
+        "visual studio code": "Visual Studio Code",
+        "code": "Visual Studio Code",
+        "notepad": "Notepad",
+        "spotify": "Spotify",
+        "discord": "Discord",
+    }
+
     def execute(self, app):
 
-        app = app.lower()
+        app = app.lower().strip()
 
-        target = None
+        title = self.TITLES.get(app)
 
-        def callback(hwnd, extra):
-
-            nonlocal target
-
-            if not win32gui.IsWindowVisible(hwnd):
-                return
-
-            title = win32gui.GetWindowText(hwnd)
-
-            if not title:
-                return
-
-            if app in title.lower():
-
-                target = hwnd
-
-        win32gui.EnumWindows(callback, None)
-
-        if not target:
+        if not title:
+            print(f"Unknown app: {app}")
             return False
 
-        # Restore if minimized
-        win32gui.ShowWindow(target, win32con.SW_RESTORE)
+        try:
+            handles = find_windows(title_re=f".*{title}.*")
 
-        # Bring to front
-        win32gui.SetForegroundWindow(target)
+            if not handles:
+                print(f"No window found for {app}")
+                return False
 
-        return True
+            app_obj = Application().connect(handle=handles[0])
+            window = app_obj.window(handle=handles[0])
+
+            window.restore()
+            window.set_focus()
+
+            print(f"Focused {app}")
+            return True
+
+        except Exception as e:
+            print(f"Failed to focus {app}: {e}")
+            return False
